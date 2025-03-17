@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>iris distance</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="favicon.ico">
+  <link rel="stylesheet" type="text/css"
+    href="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils@0.6/control_utils.css" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.3/camera_utils.js"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils@0.6/control_utils.js"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils@0.3/drawing_utils.js"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/kalmanjs@1.1.0/lib/kalman.min.js"></script>
+</head>
+
+<body style="background-color: black; font-family: Arial, Helvetica, sans-serif;">
+  <!-- partial:index.partial.html -->
+  <div class="container">
+    <video class="input_video"></video>
+    <div class="canvas-container" style="position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%)">
+      <canvas class="output_canvas" width="1280px" height="720px">
+      </canvas>
+      <div
+        style="position:fixed;font-size:20px;background-color: black; display:block; bottom:10px;text-align:center;right:20px;font-family:Arial, Helvetica, sans-serif; padding: 20px; min-width:100px;border-radius: 10px; box-shadow: 0px 0px 10px white;color:green"
+        id="result"> Loading Model <br> Please wait... <br><br> <a style='color:white' href='javascript:window.loation.reload()'> Reload now </a></div>
+    </div>
+    <div class="loading" style="background: transparent;">
+      <div class="spinner"></div>
+      <div class="message">
+        Loading
+      </div>
+    </div>
+  </div>
+  <div style='display:none' class="control-panel">
+  </div>
+
+  <div style="z-index:999999; color:white;position: fixed;right:20px;top:20px">
+    <label for="focalLength">Normalized Focal Length</label><br>
+    <input type="range" id="focalLength" onchange="flChange(event)" min="80000" max="200000" value="140625">
+    <span style='width:100px;display:inline-block' id="focalLengthValue">1.40625</span>
+    <button onclick="reset()">Reset</button>
+  </div>
+
+
+
+  <!-- partial -->
+  <script type="module" src="./script.js"></script>
+  <script>
+    function flChange(e) {
+      document.getElementById('focalLengthValue').innerHTML = (e.target.value/100000).toFixed(3);
+      localStorage.setItem('focalLength', e.target.value);
+    }
+    
+    function reset() {
+      document.getElementById('focalLength').value = 140625;
+      document.getElementById('focalLengthValue').innerHTML = 1.40625;
+      localStorage.setItem('focalLength', 140625);
+    }
+
+    document.getElementById('focalLength').value = localStorage.getItem('focalLength') || 140625;
+    document.getElementById('focalLengthValue').innerHTML = ((localStorage.getItem('focalLength') || 140625)/100000).toFixed(3);
+
+  </script>
+
+</body>
+
+</html>
